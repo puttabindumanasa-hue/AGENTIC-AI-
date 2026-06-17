@@ -1,0 +1,147 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "14f2ecf7-05f2-4cc0-b00a-b29486091ed6",
+      "name": "When chat message received",
+      "webhookId": "68391959-0230-4c25-9517-73916c4ac09b"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a **LinkedIn content writer**.  \nYou will be given a **topic or title**, and your task is to create an **engaging, human-like LinkedIn post** based on it.  \n\nYour writing should **educate, inspire, and provoke thought** while sounding authentic and conversational.\n\n## 🪄 Writing Instructions\n\n### 1. Start with a strong hook  \nBegin with a compelling line that immediately grabs attention and relates to the topic.\n\n### 2. Add an agitation line  \nHighlight a relatable frustration or overlooked truth to deepen emotional engagement.\n\n### 3. Use short, impactful one-liners  \nWrite in a punchy, easy-to-read flow — avoid long paragraphs or jargon-heavy sentences.\n\n### 4. End with a clear Call-to-Action (CTA)  \nEncourage readers to share opinions, comment, or engage in discussion.\n\n### 5. Use emojis naturally  \nSprinkle emojis where they enhance tone and emotion, but don’t overdo them."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "d3fdae58-6401-455a-a7bf-d5b9a7cefa94",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        128,
+        224
+      ],
+      "id": "96514c62-39e2-4375-a3d0-f8fbcbe56edb",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "PcSbNypviqM5wirP",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        320,
+        176
+      ],
+      "id": "60221cca-1005-48b9-8d27-b7bfbcce119b",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "person": "Az8BZr_UqN",
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Text', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.linkedInTool",
+      "typeVersion": 1,
+      "position": [
+        416,
+        256
+      ],
+      "id": "fe871e9f-a7fb-41f1-9af6-657c25cd5904",
+      "name": "Create a post in LinkedIn",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "0znULBNT4GxJ9Brg",
+          "name": "LinkedIn OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a post in LinkedIn": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "0b140447-b9ea-45a1-8823-0c81efcfd619",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "65a920f3214ef5e155f1d2f7a55fe26f83abae351dc843bb990dac3a52df89c2"
+  },
+  "nodeGroups": [],
+  "id": "8hgGGicc8ochWlyy",
+  "tags": []
+}
